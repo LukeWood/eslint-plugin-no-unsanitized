@@ -238,6 +238,14 @@ eslintTester.run("method", rule, {
                 sourceType: 'module',
             }
         },
+        {
+            code: "if ((<ParsedStringPattern>parsedPatterns[i])(path, basename)) { return 1 }",
+            parser: PATH_TO_TYPESCRIPT_ESLINT,
+            parserOptions: {
+                ecmaVersion: 2018,
+                sourceType: 'module',
+            }
+        },
     ],
 
     // Examples of code that should trigger the rule
