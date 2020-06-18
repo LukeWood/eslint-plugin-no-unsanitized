@@ -220,6 +220,24 @@ eslintTester.run("method", rule, {
             code: "(e = node.insertAdjacentHTML('beforebegin', '<s>safe</s>'))()",
             parserOptions: { ecmaVersion: 6 },
         },
+        {
+            code: "let employeeCode = <number> code;",
+            parser: PATH_TO_TYPESCRIPT_ESLINT,
+            parserOptions: {
+                ecmaVersion: 2018,
+                sourceType: 'module',
+            },
+        },
+
+        // Typescript support tests
+        {
+            code: "return !!selection && (!this.options.isVisible || (this.options.isVisible as any)(selection as any, ...args))",
+            parser: PATH_TO_TYPESCRIPT_ESLINT,
+            parserOptions: {
+                ecmaVersion: 2018,
+                sourceType: 'module',
+            }
+        },
     ],
 
     // Examples of code that should trigger the rule
