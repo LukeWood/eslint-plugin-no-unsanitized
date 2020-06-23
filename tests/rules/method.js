@@ -12,6 +12,7 @@ const rule = require("../../lib/rules/method");
 const RuleTester = require("eslint").RuleTester;
 
 const PATH_TO_BABEL_ESLINT = `${process.cwd()}/node_modules/babel-eslint/`;
+const PATH_TO_TYPESCRIPT_ESLINT = `${process.cwd()}/node_modules/@typescript-eslint/parser/`;
 
 //------------------------------------------------------------------------------
 // Tests
@@ -218,6 +219,32 @@ eslintTester.run("method", rule, {
         { // Regression test for #124, make sure we go deeper into validating the AssignmentExpression.
             code: "(e = node.insertAdjacentHTML('beforebegin', '<s>safe</s>'))()",
             parserOptions: { ecmaVersion: 6 },
+        },
+        {
+            code: "let employeeCode = <number> code;",
+            parser: PATH_TO_TYPESCRIPT_ESLINT,
+            parserOptions: {
+                ecmaVersion: 2018,
+                sourceType: 'module',
+            },
+        },
+
+        // Typescript support tests
+        {
+            code: "return !!selection && (!this.options.isVisible || (this.options.isVisible as any)(selection as any, ...args))",
+            parser: PATH_TO_TYPESCRIPT_ESLINT,
+            parserOptions: {
+                ecmaVersion: 2018,
+                sourceType: 'module',
+            }
+        },
+        {
+            code: "if ((<ParsedStringPattern>parsedPatterns[i])(path, basename)) { return 1 }",
+            parser: PATH_TO_TYPESCRIPT_ESLINT,
+            parserOptions: {
+                ecmaVersion: 2018,
+                sourceType: 'module',
+            }
         },
     ],
 
@@ -532,7 +559,7 @@ eslintTester.run("method", rule, {
                     type: "Literal"
                 }
             ]
-        }
+        },
         // Typescript test cases
         //
         // Null coalescing operator
