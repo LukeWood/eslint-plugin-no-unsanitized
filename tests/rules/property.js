@@ -11,6 +11,8 @@
 const rule = require("../../lib/rules/property");
 const RuleTester = require("eslint").RuleTester;
 
+const PATH_TO_TYPESCRIPT_ESLINT = `${process.cwd()}/node_modules/@typescript-eslint/parser/`;
+
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
@@ -23,6 +25,14 @@ eslintTester.run("property", rule, {
     // XXX this does not find z['innerHTML'] and the like.
 
     valid: [
+        {
+            code: "provider!()",
+            parser: PATH_TO_TYPESCRIPT_ESLINT,
+            parserOptions: {
+                ecmaVersion: 2018,
+                sourceType: 'module',
+            }
+        },
         // tests for innerHTML equals
         {
             code: "a.innerHTML = '';",
@@ -155,6 +165,20 @@ eslintTester.run("property", rule, {
          * The developer can search for them and will find this MDN article:
          *  https://developer.mozilla.org/en-US/Firefox_OS/Security/Security_Automation
          */
+        {
+            code: "x!().innerHTML = htmlString",
+            parser: PATH_TO_TYPESCRIPT_ESLINT,
+            parserOptions: {
+                ecmaVersion: 2018,
+                sourceType: 'module',
+            },
+            errors: [
+            {
+                message: "Unsafe assignment to innerHTML",
+                type: "AssignmentExpression"
+            }
+            ]
+        },
 
         // innerHTML examples
         {
